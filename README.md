@@ -1,0 +1,1 @@
+secjs-wallet
