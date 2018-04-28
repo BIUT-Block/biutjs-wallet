@@ -1,3 +1,6 @@
+/**
+ * SEC Wallet Test
+ */
 const crypto = require('crypto');
 const EC = require('elliptic').ec;
 const RIPEMD160 = require('ripemd160');
