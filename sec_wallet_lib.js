@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const EC = require('elliptic').ec
 const RIPEMD160 = require('ripemd160')
 const bs58 = require('bs58')
-const buffer = require('buffer')
+//const buffer = require('buffer')
 const ec = new EC('secp256k1')
 
 class secWallet {
@@ -66,8 +66,8 @@ class secWallet {
          * set elliptic point and x,y axis
          */
         let pubPoint = key.getPublic()
-        let x = pubPoint.getX()
-        let y = pubPoint.getY()
+        //let x = pubPoint.getX()
+        //let y = pubPoint.getY()
 
         /**
          * use secp256k1. generate public key
