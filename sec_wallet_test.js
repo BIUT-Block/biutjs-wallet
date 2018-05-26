@@ -108,11 +108,11 @@ var secWifAddress = wifFinal.toString('hex');
 var secAddress = bs58.encode(Buffer.from(secBinaryStr));
 
 
-console.log("Private Key : %s", privKey.toString('hex'));
-console.log("Public Key : %s", publicKey.toString('hex'));
+console.log('Private Key : %s', privKey.toString('hex'));
+console.log('Public Key : %s', publicKey.toString('hex'));
 console.log();
-console.log("SEC WIF Private Key : %s", secWifAddress.toString('hex'));
-console.log("SEC User Address : %s", secAddress.toString('hex'));
+console.log('SEC WIF Private Key : %s', secWifAddress.toString('hex'));
+console.log('SEC User Address : %s', secAddress.toString('hex'));
 
 
 

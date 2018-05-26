@@ -1,0 +1,36 @@
+{
+  "name": "secjs-wallet",
+  "version": "1.0.0",
+  "description": "secjs wallet includes privat key public key and address",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "example.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/MongoX-SEC/secjs-wallet.git"
+  },
+  "keywords": [
+    "secjs",
+    "blockchain",
+    "secblock",
+    "secwallet"
+  ],
+  "author": "ppg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/MongoX-SEC/secjs-wallet/issues"
+  },
+  "homepage": "https://gitlab.com/MongoX-SEC/secjs-wallet#README",
+  "dependencies": {
+    "bs58": "^4.0.1",
+    "buffer": "^5.1.0",
+    "crypto": "^1.0.1",
+    "elliptic": "^6.4.0",
+    "ripemd160": "^2.0.2",
+    "secp256k1": "^3.5.0"
+  }
+}
