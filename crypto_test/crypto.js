@@ -6,10 +6,11 @@ const secp256k1 = require('secp256k1')
 // generate message to sign
 const msg = randomBytes(32)
 
+
 // generate privKey
 let privKey
 do {
-  privKey = randomBytes(32)
+    privKey = randomBytes(32)
 } while (!secp256k1.privateKeyVerify(privKey))
 
 // get the public key in a compressed format
