@@ -1,5 +1,5 @@
 {
-  "name": "secjs-wallet",
+  "name": "@sec-block/secjs-wallet",
   "version": "1.0.0",
   "description": "secjs wallet includes privat key public key and address",
   "main": "index.js",
