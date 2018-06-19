@@ -1,4 +1,4 @@
-const SecWallet = require('./index')
+const SecWallet = require('../src/index')
 let TestWallet = new SecWallet()
 
 console.log(`PrivateKey: ${TestWallet.getPrivateKey()}`)
