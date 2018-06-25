@@ -5,9 +5,8 @@ var scryptsy = require('scrypt.js')
 var uuidv4 = require('uuid/v4')
 var bs58check = require('bs58check')
 
-class secWallet {
+class SecWallet {
   constructor (priv, pub) {
-
     if (priv && pub) {
       throw new Error('Cant supply both a private key and a public key to the constructor')
     }
@@ -51,11 +50,11 @@ class secWallet {
       while (true) {
         let privKey = crypto.randomBytes(32)
         if (new ethUtil.BN(ethUtil.privateToAddress(privKey)).lte(max)) {
-          return privKey
+          return new SecWallet(privKey)
         }
       }
     } else {
-      return crypto.randomBytes(32)
+      return new SecWallet(crypto.randomBytes(32))
     }
   }
 
@@ -69,7 +68,7 @@ class secWallet {
       let address = ethUtil.privateToAddress(privKey)
 
       if (pattern.test(address.toString('hex'))) {
-        return privKey
+        return new SecWallet(privKey)
       }
     }
   }
@@ -100,5 +99,9 @@ class secWallet {
   getAddressString () {
     return ethUtil.bufferToHex(this.getAddress())
   }
+
+  getAddressChecksumString () {
+    return ethUtil.toChecksumAddress(this.getAddressString())
+  }
 }
-module.exports = secWallet
+module.exports = SecWallet
