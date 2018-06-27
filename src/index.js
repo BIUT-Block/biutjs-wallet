@@ -20,7 +20,6 @@ class SecWallet {
     }
     this._privKey = priv
     this._pubKey = pub
-    this.fromPrivateKey(priv)
   }
 
   assert (val, msg) {
@@ -73,10 +72,6 @@ class SecWallet {
     }
   }
 
-  fromPrivateKey (priv) {
-    return priv
-  }
-
   getPrivateKey () {
     return this.privKey
   }
@@ -102,6 +97,30 @@ class SecWallet {
 
   getAddressChecksumString () {
     return ethUtil.toChecksumAddress(this.getAddressString())
+  }
+
+  fromPrivateKey (priv) {
+    return new SecWallet(priv)
+  }
+
+  fromExtendedPrivateKey (priv) {
+    this.assert(priv.slice(0, 4) === 'sprv', 'Not an extended private key')
+    let tmp = bs58check.decode(priv)
+    this.assert(tmp[45] === 0, 'Invalid extended private key')
+    return this.fromPrivateKey(tmp.slice(46))
+  }
+
+  fromPublicKey (pub, nonStrict) {
+    if (nonStrict) {
+      pub = ethUtil.importPublic(pub)
+    }
+    return new SecWallet(null, pub)
+  }
+
+  fromExtendedPublicKey (pub) {
+    this.assert(pub.slice(0, 4) === 'spub', 'Not an extended public key')
+    pub = bs58check.decode(pub).slice(45)
+    return this.fromPublicKey(pub, true)
   }
 }
 module.exports = SecWallet

@@ -5,7 +5,7 @@ const Wallet = new SecWallet(fixturekey)
 // Wallet.init(fixturekey)
 // let Wallet = Wallet.fromPrivateKey(fixturekey)
 
-console.log(Wallet)
+
 
 let privateKey = Wallet.getPrivateKey().toString('hex')
 let privateKeyString = Wallet.getPrivateKeyString()
@@ -29,3 +29,4 @@ console.log(`Address: ${address} Length: ${address.length}`)
 console.log(`Address to String: ${addressString} Length: ${addressString.length}`)
 console.log(`Checksum Address: ${addressChecksum} Length: ${addressChecksum.length}`)
 console.log('*********************************************************************')
+console.log(Wallet)
