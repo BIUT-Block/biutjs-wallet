@@ -104,7 +104,7 @@ class SecWallet {
   }
 
   fromExtendedPrivateKey (priv) {
-    this.assert(priv.slice(0, 4) === 'sprv', 'Not an extended private key')
+    this.assert(priv.slice(0, 4) === 'xprv', 'Not an extended private key')
     let tmp = bs58check.decode(priv)
     this.assert(tmp[45] === 0, 'Invalid extended private key')
     return this.fromPrivateKey(tmp.slice(46))
@@ -118,7 +118,7 @@ class SecWallet {
   }
 
   fromExtendedPublicKey (pub) {
-    this.assert(pub.slice(0, 4) === 'spub', 'Not an extended public key')
+    this.assert(pub.slice(0, 4) === 'xpub', 'Not an extended public key')
     pub = bs58check.decode(pub).slice(45)
     return this.fromPublicKey(pub, true)
   }

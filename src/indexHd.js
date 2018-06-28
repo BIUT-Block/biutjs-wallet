@@ -2,9 +2,6 @@ const SecWallet = require('./index')
 const HDKey = require('hdkey')
 
 class SecHDKey {
-  constructor () {
-
-  }
   fromHDKey (hdkey) {
     let ret = new SecHDKey()
     ret._hdkey = hdkey
