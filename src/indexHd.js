@@ -1,4 +1,4 @@
-const SecWallet = require('./index')
+const _SecWallet = require('./index.js')
 const HDKey = require('hdkey')
 
 class SecHDKey {
@@ -40,6 +40,7 @@ class SecHDKey {
   }
 
   getWallet () {
+    const SecWallet = new _SecWallet()
     if (this._hdkey._privateKey) {
       return SecWallet.fromPrivateKey(this._hdkey._privateKey)
     } else {

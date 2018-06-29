@@ -1,4 +1,3 @@
-const assert = require('assert')
 const HDKey = require('../src/indexHd')
 const Buffer = require('safe-buffer').Buffer
 
@@ -33,3 +32,26 @@ let pubNodeExtendedKeyTwo = hdPrivNode.publicExtendedKey()
 let privNodeExtendedKey = hdPrivNode.privateExtendedKey()
 console.log(pubNodeExtendedKeyTwo)
 console.log(privNodeExtendedKey)
+console.log('*******************************************************************************************************')
+
+let hdChild = SecHd.deriveChild(1)
+let childTest = hdChild.privateExtendedKey()
+console.log(childTest)
+console.log('*******************************************************************************************************')
+
+let hdPath = SecHd.derivePath('m')
+let pathTest = hdPath.privateExtendedKey()
+console.log(pathTest)
+
+let hdPathTwo = SecHd.derivePath('m/44\'/0\'/0/1')
+let pathTestTwo = hdPathTwo.privateExtendedKey()
+console.log(pathTestTwo)
+console.log('*******************************************************************************************************')
+
+let walletPriv = SecHd.getWallet().getPrivateKeyString()
+let walletPub = SecHd.getWallet().getPublicKeyString()
+console.log(walletPriv)
+console.log(walletPub)
+
+let walletPubTwo = hdPubNode.getWallet().getPublicKeyString()
+console.log(walletPubTwo)
