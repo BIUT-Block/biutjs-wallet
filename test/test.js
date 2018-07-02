@@ -2,10 +2,6 @@ const SecWallet = require('../src/index')
 
 let fixturekey = Buffer.from('efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378', 'hex')
 const Wallet = new SecWallet(fixturekey)
-// Wallet.init(fixturekey)
-// let Wallet = Wallet.fromPrivateKey(fixturekey)
-
-
 
 let privateKey = Wallet.getPrivateKey().toString('hex')
 let privateKeyString = Wallet.getPrivateKeyString()
