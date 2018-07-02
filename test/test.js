@@ -1,4 +1,4 @@
-const SecWallet = require('../src/index')
+const SecWallet = require('../src/indexWallet')
 
 let fixturekey = Buffer.from('efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378', 'hex')
 const Wallet = new SecWallet(fixturekey)

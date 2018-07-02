@@ -1,4 +1,4 @@
-const _SecWallet = require('./index.js')
+const _SecWallet = require('./indexWallet')
 const HDKey = require('hdkey')
 
 /**
