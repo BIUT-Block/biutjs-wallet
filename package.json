@@ -2,12 +2,12 @@
   "name": "@sec-block/secjs-wallet",
   "version": "1.1.2",
   "description": "secjs wallet includes privat key public key and address",
-  "main": "index.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "example.js"
+    "test": "test/test.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +22,9 @@
   "author": "ppg",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/MongoX-SEC/secjs-wallet/issues"
+    "url": "https://github.com/SEC-Block/secjs-wallet/issues"
   },
-  "homepage": "https://gitlab.com/MongoX-SEC/secjs-wallet#README",
+  "homepage": "https://github.com/SEC-Block/secjs-wallet#README",
   "dependencies": {
     "bs58": "^4.0.1",
     "bs58check": "^2.1.1",
