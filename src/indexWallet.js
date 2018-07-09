@@ -86,7 +86,7 @@ class SecWallet {
    * (this will be very slow)
    * @param  {String} pattern
    */
-  generateVantiyaAddress (pattern) {
+  generateVanityAddress (pattern) {
     if (typeof pattern !== 'object') {
       pattern = new RegExp(pattern)
     }

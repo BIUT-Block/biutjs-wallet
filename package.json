@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "test/test.js"
+    "test": "test/mochaTestWallet.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/SEC-Block/secjs-wallet#README",
   "dependencies": {
+    "aes-js": "^3.1.1",
     "bs58": "^4.0.1",
     "bs58check": "^2.1.1",
     "buffer": "^5.1.0",
@@ -36,6 +37,11 @@
     "ripemd160": "^2.0.2",
     "scrypt.js": "^0.2.0",
     "secp256k1": "^3.5.0",
+    "utf8": "^3.0.0",
     "uuid": "^3.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
   }
 }
