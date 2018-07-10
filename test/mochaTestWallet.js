@@ -209,16 +209,30 @@ describe('.fromV3()', function () {
       Wallet.fromV3(w, 'testpassword')
     }) // FIXME: check for assert message(s)
   })
+
   it('should fail for wrong version', function () {
     var w = '{"version":2}'
     assert.throws(function () {
       Wallet.fromV3(w, 'testpassword')
     }, /^Error: Not a V3 wallet$/)
   })
+
   it('should fail for wrong kdf', function () {
     var w = '{"Crypto":{"kdf":"superkey"},"version":3}'
     assert.throws(function () {
       Wallet.fromV3(w, 'testpassword', true)
     }, /^Error: Unsupported key derivation scheme$/)
+  })
+})
+
+/**
+ * test Sec Sale with Thirdparty
+ */
+
+describe('.fromSecSale()', function () {
+  var json = '{"encseed": "81ffdfaf2736310ce87df268b53169783e8420b98f3405fb9364b96ac0feebfb62f4cf31e0d25f1ded61f083514dd98c3ce1a14a24d7618fd513b6d97044725c7d2e08a7d9c2061f2c8a05af01f06755c252f04cab20fee2a4778130440a9344", "ethaddr": "22f8c5dd4a0a9d59d580667868df2da9592ab292", "email": "hello@ethereum.org", "btcaddr": "1DHW32MFwHxU2nk2SLAQq55eqFotT9jWcq"}'
+  it('should work', function () {
+    var wallet = Wallet.fromSecSale(json, 'testtest')
+    assert.equal(wallet.getAddressString(), '0x22f8c5dd4a0a9d59d580667868df2da9592ab292')
   })
 })

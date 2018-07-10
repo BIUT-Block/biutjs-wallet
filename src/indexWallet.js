@@ -291,6 +291,9 @@ class SecWallet {
     this.assert(typeof password === 'string')
     let json = (typeof input === 'object') ? input : JSON.parse(nonStrict ? input.toLowerCase() : input)
 
+    if (json.version !== 3) {
+      throw new Error('Not a V3 wallet')
+    }
     let derivedKey
     let kdfparams
 
