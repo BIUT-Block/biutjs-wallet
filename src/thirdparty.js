@@ -14,7 +14,8 @@ class thirdParty {
   }
 
   decipherBuffer (decipher, data) {
-    return Buffer.concat([decipher.updata(data), decipher.final()])
+
+    return Buffer.concat([ decipher.update(data), decipher.final() ])
   }
 
   evp_kdf (data, salt, opts) {
@@ -94,7 +95,7 @@ class thirdParty {
       }
 
       // derive key/iv using OpenSSL EVP as implemented in CryptoJS
-      let evp = this_evp_kdf(Buffer.from(password), cipher.salt, { keysize: 32, ivsize: 16 })
+      let evp = this.evp_kdf(Buffer.from(password), cipher.salt, { keysize: 32, ivsize: 16 })
 
       let decipher = crypto.createDecipheriv('aes-256-cbc', evp.key, evp.iv)
       privKey = this.decipherBuffer(decipher, Buffer.from(cipher.ciphertext))
@@ -188,7 +189,7 @@ class thirdParty {
     } else {
       throw new Error('Unsupported or invalid entropy type')
     }
-    return SecWallet(privKey)
+    return new SecWallet(privKey)
   }
 
   fromQuorumWallet (passphrase, userid) {

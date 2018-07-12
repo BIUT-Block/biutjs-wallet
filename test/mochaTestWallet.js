@@ -12,8 +12,9 @@ const Wallet = new SecWallet(fixturePrivateKeyBuffer)
 var fixturePublicKey = '5d4392f450262b276652c1fc037606abac500f3160830ce9df53aa70d95ce7cfb8b06010b2f3691c78c65c21eb4cf3dfdbfc0745d89b664ee10435bb3a0f906c'
 var fixturePublicKeyStr = '0x' + fixturePublicKey
 var fixturePublicKeyBuffer = Buffer.from(fixturePublicKey, 'hex')
-
 var fixtureWallet = Wallet.fromPrivateKey(fixturePrivateKeyBuffer)
+
+const thirdparty = new Thirdparty()
 
 describe('.getPrivateKey()', function () {
   it('should work', function () {
@@ -234,5 +235,51 @@ describe('.fromSecSale()', function () {
   it('should work', function () {
     var wallet = Wallet.fromSecSale(json, 'testtest')
     assert.equal(wallet.getAddressString(), '0x22f8c5dd4a0a9d59d580667868df2da9592ab292')
+  })
+})
+
+describe('.fromSecWallet()', function () {
+  it('should work with unencrypted input', function () {
+    var etherWalletUnencrypted = '{"address":"0x9d6abd11d36cc20d4836c25967f1d9efe6b1a27c","encrypted":true,"locked":false,"hash":"b7a6621e8b125a17234d3e5c35522696a84134d98d07eab2479d020a8613c4bd","private":"a2c6222146ca2269086351fda9f8d2dfc8a50331e8a05f0f400c13653a521862","public":"2ed129b50b1a4dbbc53346bf711df6893265ad0c700fd11431b0bc3a66bd383a87b10ad835804a6cbe092e0375a0cc3524acf06b1ec7bb978bf25d2d6c35d120"}'
+    var wallet = thirdparty.fromSecWallet(etherWalletUnencrypted)
+    assert.equal(wallet.getAddressString(), '0x9d6abd11d36cc20d4836c25967f1d9efe6b1a27c')
+  })
+  it('should work with encrypted input', function () {
+    var etherWalletEncrypted = '{"address":"0x9d6abd11d36cc20d4836c25967f1d9efe6b1a27c","encrypted":true,"locked":true,"hash":"b7a6621e8b125a17234d3e5c35522696a84134d98d07eab2479d020a8613c4bd","private":"U2FsdGVkX1/hGPYlTZYGhzdwvtkoZfkeII4Ga4pSd/Ak373ORnwZE4nf/FFZZFcDTSH1X1+AmewadrW7dqvwr76QMYQVlihpPaFV307hWgKckkG0Mf/X4gJIQQbDPiKdcff9","public":"U2FsdGVkX1/awUDAekZQbEiXx2ct4ugXwgBllY0Hz+IwYkHiEhhxH+obu7AF7PCU2Vq5c0lpCzBUSvk2EvFyt46bw1OYIijw0iOr7fWMJEkz3bfN5mt9pYJIiPzN0gxM8u4mrmqLPUG2SkoZhWz4NOlqRUHZq7Ep6aWKz7KlEpzP9IrvDYwGubci4h+9wsspqtY1BdUJUN59EaWZSuOw1g=="}'
+    var wallet = thirdparty.fromSecWallet(etherWalletEncrypted, 'testtest')
+    assert.equal(wallet.getAddressString(), '0x9d6abd11d36cc20d4836c25967f1d9efe6b1a27c')
+  })
+})
+
+describe('.fromEtherCamp()', function () {
+  it('should work with seed text', function () {
+    var wallet = thirdparty.fromSecCamp('ethercamp123')
+    assert.equal(wallet.getAddressString(), '0x182b6ca390224c455f11b6337d74119305014ed4')
+  })
+})
+
+describe('.fromKryptoKit()', function () {
+  it('should work with basic input (d-type)', function () {
+    var wallet = thirdparty.fromKryptoKit('dBWfH8QZSGbg1sAYHLBhqE5R8VGAoM7')
+    assert.equal(wallet.getAddressString(), '0x3611981ad2d6fc1d7579d6ce4c6bc37e272c369c')
+  })
+  it('should work with encrypted input (q-type)', function () {
+    var wallet = thirdparty.fromKryptoKit('qhah1VeT0RgTvff1UKrUrxtFViiQuki16dd353d59888c25', 'testtest')
+    assert.equal(wallet.getAddressString(), '0x3c753e27834db67329d1ec1fab67970ec1e27112')
+  })
+})
+
+describe('.fromQuorumWallet()', function () {
+  it('should work', function () {
+    var wallet = thirdparty.fromQuorumWallet('testtesttest', 'ethereumjs-wallet')
+    assert.equal(wallet.getAddressString(), '0x1b86ccc22e8f137f204a41a23033541242a48815')
+  })
+})
+
+describe('raw new Wallet() init', function () {
+  it('should fail when both priv and pub key provided', function () {
+    assert.throws(function () {
+      new SecWallet(fixturePrivateKeyBuffer, fixturePublicKeyBuffer) // eslint-disable-line
+    }, /^Error: Cant supply both a private key and a public key to the constructor$/)
   })
 })
