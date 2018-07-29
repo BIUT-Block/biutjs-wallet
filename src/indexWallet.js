@@ -86,7 +86,7 @@ class SecWallet {
    * (this will be very slow)
    * @param  {String} pattern
    */
-  generateVantiyaAddress (pattern) {
+  generateVanityAddress (pattern) {
     if (typeof pattern !== 'object') {
       pattern = new RegExp(pattern)
     }
@@ -291,6 +291,9 @@ class SecWallet {
     this.assert(typeof password === 'string')
     let json = (typeof input === 'object') ? input : JSON.parse(nonStrict ? input.toLowerCase() : input)
 
+    if (json.version !== 3) {
+      throw new Error('Not a V3 wallet')
+    }
     let derivedKey
     let kdfparams
 
