@@ -1,10 +1,12 @@
 const SecWallet = require('./indexWallet.js')
-const ethUtil = require('ethereumjs-util')
 const crypto = require('crypto')
 const scryptsy = require('scrypt.js')
 const utf8 = require('utf8')
 const aesjs = require('aes-js')
 const Buffer = require('safe-buffer').Buffer
+const Util = require('@sec-block/secjs-util')
+
+let secUtil = new Util()
 
 class thirdParty {
   assert (val, msg) {
@@ -14,7 +16,6 @@ class thirdParty {
   }
 
   decipherBuffer (decipher, data) {
-
     return Buffer.concat([ decipher.update(data), decipher.final() ])
   }
 
@@ -113,7 +114,7 @@ class thirdParty {
   }
 
   fromSecCamp (passphrase) {
-    return new SecWallet(ethUtil.sha3(Buffer.from(passphrase)))
+    return new SecWallet(secUtil.sha3(Buffer.from(passphrase)))
   }
 
   fromKryptoKit (entropy, password) {
@@ -150,13 +151,13 @@ class thirdParty {
 
     let privKey
     if (type === 'd') {
-      privKey = ethUtil.sha256(entropy)
+      privKey = secUtil.sha256(entropy)
     } else if (type === 'q') {
       if (typeof password !== 'string') {
         throw new Error('Password required')
       }
 
-      let encryptedSeed = ethUtil.sha256(Buffer.from(entropy.slice(0, 30)))
+      let encryptedSeed = secUtil.sha256(Buffer.from(entropy.slice(0, 30)))
       let checksum = entropy.slice(30, 46)
 
       let salt = kryptoKitBrokenScryptSeed(encryptedSeed)
@@ -182,7 +183,7 @@ class thirdParty {
       ])
 
       if (checksum.length > 0) {
-        if (checksum !== ethUtil.sha256(ethUtil.sha256(privKey)).slice(0, 8).toString('hex')) {
+        if (checksum !== secUtil.sha256(secUtil.sha256(privKey)).slice(0, 8).toString('hex')) {
           throw new Error('Failed to decrypt input - possibly invalid passphrase')
         }
       }

@@ -1,18 +1,21 @@
-var assert = require('assert')
-var Buffer = require('safe-buffer').Buffer
-var SecWallet = require('../src/indexWallet')
-var Thirdparty = require('../src/thirdparty.js')
-var ethUtil = require('ethereumjs-util')
+const assert = require('assert')
+const Buffer = require('safe-buffer').Buffer
+const SecWallet = require('../src/indexWallet')
+const Thirdparty = require('../src/thirdparty.js')
 
-var fixturePrivateKey = 'efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378'
-var fixturePrivateKeyStr = '0x' + fixturePrivateKey
-var fixturePrivateKeyBuffer = Buffer.from(fixturePrivateKey, 'hex')
+const Util = require('@sec-block/secjs-util')
+
+let secUtil = new Util()
+
+const fixturePrivateKey = 'efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378'
+const fixturePrivateKeyStr = '0x' + fixturePrivateKey
+const fixturePrivateKeyBuffer = Buffer.from(fixturePrivateKey, 'hex')
 const Wallet = new SecWallet(fixturePrivateKeyBuffer)
 
-var fixturePublicKey = '5d4392f450262b276652c1fc037606abac500f3160830ce9df53aa70d95ce7cfb8b06010b2f3691c78c65c21eb4cf3dfdbfc0745d89b664ee10435bb3a0f906c'
-var fixturePublicKeyStr = '0x' + fixturePublicKey
-var fixturePublicKeyBuffer = Buffer.from(fixturePublicKey, 'hex')
-var fixtureWallet = Wallet.fromPrivateKey(fixturePrivateKeyBuffer)
+const fixturePublicKey = '5d4392f450262b276652c1fc037606abac500f3160830ce9df53aa70d95ce7cfb8b06010b2f3691c78c65c21eb4cf3dfdbfc0745d89b664ee10435bb3a0f906c'
+const fixturePublicKeyStr = '0x' + fixturePublicKey
+const fixturePublicKeyBuffer = Buffer.from(fixturePublicKey, 'hex')
+const fixtureWallet = Wallet.fromPrivateKey(fixturePrivateKeyBuffer)
 
 const thirdparty = new Thirdparty()
 
@@ -113,10 +116,10 @@ describe('.generate()', function () {
     assert.equal(Wallet.generate().getPrivateKey().length, 32)
   })
   it('should generate an account compatible with ICAP Direct', function () {
-    var max = new ethUtil.BN('088f924eeceeda7fe92e1f5b0fffffffffffffff', 16)
+    var max = new secUtil.BN('088f924eeceeda7fe92e1f5b0fffffffffffffff', 16)
     var wallet = Wallet.generate(true)
     assert.equal(wallet.getPrivateKey().length, 32)
-    assert.equal(new ethUtil.BN(wallet.getAddress()).lte(max), true)
+    assert.equal(new secUtil.BN(wallet.getAddress()).lte(max), true)
   })
 })
 

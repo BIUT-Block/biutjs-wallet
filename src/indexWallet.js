@@ -1,9 +1,11 @@
-var Buffer = require('safe-buffer').Buffer
-var ethUtil = require('ethereumjs-util')
-var crypto = require('crypto')
-var scryptsy = require('scrypt.js')
-var uuidv4 = require('uuid/v4')
-var bs58check = require('bs58check')
+const Buffer = require('safe-buffer').Buffer
+const crypto = require('crypto')
+const scryptsy = require('scrypt.js')
+const uuidv4 = require('uuid/v4')
+const bs58check = require('bs58check')
+const Util = require('@sec-block/secjs-util')
+
+let secUtil = new Util()
 /**
  * Generate a lightweight wallet, At th moment it supports key creation and conversion between various formats
  * It is complemented by the following packages:
@@ -22,11 +24,11 @@ class SecWallet {
       throw new Error('Cant supply both a private key and a public key to the constructor')
     }
 
-    if (priv && !ethUtil.isValidPrivate(priv)) {
+    if (priv && !secUtil.isValidPrivate(priv)) {
       throw new Error('Private key does not satisfy the curve requirements (ie. it is invalid)')
     }
 
-    if (pub && !ethUtil.isValidPublic(pub)) {
+    if (pub && !secUtil.isValidPublic(pub)) {
       throw new Error('Invalid public key')
     }
     this._privKey = priv
@@ -58,7 +60,7 @@ class SecWallet {
    */
   get pubKey () {
     if (!this._pubKey) {
-      this._pubKey = ethUtil.privateToPublic(this.privKey)
+      this._pubKey = secUtil.privateToPublic(this.privKey)
     }
     return this._pubKey
   }
@@ -70,10 +72,10 @@ class SecWallet {
    */
   generate (icapGenerate) {
     if (icapGenerate) {
-      let max = new ethUtil.BN('088f924eeceeda7fe92e1f5b0fffffffffffffff', 16)
+      let max = new secUtil.BN('088f924eeceeda7fe92e1f5b0fffffffffffffff', 16)
       while (true) {
         let privKey = crypto.randomBytes(32)
-        if (new ethUtil.BN(ethUtil.privateToAddress(privKey)).lte(max)) {
+        if (new secUtil.BN(secUtil.privateToAddress(privKey)).lte(max)) {
           return new SecWallet(privKey)
         }
       }
@@ -93,7 +95,7 @@ class SecWallet {
 
     while (true) {
       let privKey = crypto.randomBytes(32)
-      let address = ethUtil.privateToAddress(privKey)
+      let address = secUtil.privateToAddress(privKey)
 
       if (pattern.test(address.toString('hex'))) {
         return new SecWallet(privKey)
@@ -110,7 +112,7 @@ class SecWallet {
    * -return the private key to string mode
    */
   getPrivateKeyString () {
-    return ethUtil.bufferToHex(this.getPrivateKey())
+    return secUtil.bufferToHex(this.getPrivateKey())
   }
   /**
    * -return the public key
@@ -122,25 +124,25 @@ class SecWallet {
    * -return the public key to string mode
    */
   getPublicKeyString () {
-    return ethUtil.bufferToHex(this.getPublicKey())
+    return secUtil.bufferToHex(this.getPublicKey())
   }
   /**
    * -return the address
    */
   getAddress () {
-    return ethUtil.publicToAddress(this.pubKey)
+    return secUtil.publicToAddress(this.pubKey)
   }
   /**
    * return the address to the string mode
    */
   getAddressString () {
-    return ethUtil.bufferToHex(this.getAddress())
+    return secUtil.bufferToHex(this.getAddress())
   }
   /**
    * -return the address with checksum
    */
   getAddressChecksumString () {
-    return ethUtil.toChecksumAddress(this.getAddressString())
+    return secUtil.toChecksumAddress(this.getAddressString())
   }
   /**
    * -create an instance based on a raw private key
@@ -167,7 +169,7 @@ class SecWallet {
    */
   fromPublicKey (pub, nonStrict) {
     if (nonStrict) {
-      pub = ethUtil.importPublic(pub)
+      pub = secUtil.importPublic(pub)
     }
     return new SecWallet(null, pub)
   }
@@ -217,7 +219,7 @@ class SecWallet {
     }
 
     let ciphertext = Buffer.concat([cipher.update(this.privKey), cipher.final()])
-    let mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), Buffer.from(ciphertext, 'hex')]))
+    let mac = secUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), Buffer.from(ciphertext, 'hex')]))
 
     return {
       version: 3,
@@ -275,13 +277,13 @@ class SecWallet {
 
     let ciphertext = Buffer.from(json.Crypto.CipherText, 'hex')
 
-    let mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))
+    let mac = secUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))
 
     if (mac.toString('hex') !== json.Crypto.MAC) {
       throw new Error('Key derivation failed - possibly wrong passphrase')
     }
 
-    let decipher = crypto.createDecipheriv('aes-128-cbc', ethUtil.sha3(derivedKey.slice(0, 16)).slice(0, 16), Buffer.from(json.Crypto.IV, 'hex'))
+    let decipher = crypto.createDecipheriv('aes-128-cbc', secUtil.sha3(derivedKey.slice(0, 16)).slice(0, 16), Buffer.from(json.Crypto.IV, 'hex'))
     let seed = this.decipherBuffer(decipher, ciphertext)
 
     return new SecWallet(seed)
@@ -318,7 +320,7 @@ class SecWallet {
 
     let ciphertext = Buffer.from(json.crypto.ciphertext, 'hex')
 
-    let mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))
+    let mac = secUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))
     if (mac.toString('hex') !== json.crypto.mac) {
       throw new Error('Key derivation failed - possibly wrong passphrase')
     }
@@ -340,7 +342,7 @@ class SecWallet {
     let decipher = crypto.createDecipheriv('aes-128-cbc', derivedKey, encseed.slice(0, 16))
     let seed = this.decipherBuffer(decipher, encseed.slice(16))
 
-    let wallet = new SecWallet(ethUtil.sha3(seed))
+    let wallet = new SecWallet(secUtil.sha3(seed))
     if (wallet.getAddress().toString('hex') !== json.ethaddr) {
       throw new Error('Decoded key mismatch - possibly wrong passphrase')
     }
