@@ -1,6 +1,6 @@
 {
   "name": "@sec-block/secjs-wallet",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "secjs wallet includes privat key public key and address",
   "main": "src/index.js",
   "directories": {
